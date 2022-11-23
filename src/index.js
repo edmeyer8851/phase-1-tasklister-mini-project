@@ -2,23 +2,31 @@ let priorities = ['Low', 'Medium', 'High']
 
 document.addEventListener("DOMContentLoaded", () => {
   // your code here
-  let form = document.querySelector('form#create-task-form')
+  let form = document.querySelector('#create-task-form')
   let createNewTaskButton = document.querySelector('input[type="submit"]')
+  let priorityDropdown = document.createElement('select')
+  let priorityLabel = document.createElement('label')
+  let userField = document.createElement('input')
+  let userLabel = document.createElement('label')
   
   generatePriorityDropdown();
+  generateUserField();
   
   form.addEventListener('submit', e => {
     e.preventDefault()
     let taskName = document.querySelector('input#new-task-description').value
     let priority = document.querySelector('select#new-task-priority').value
+    let user = document.querySelector('input#new-task-user').value
 
-    addToTaskList(taskName, priority)
+
+    addToTaskList(taskName, priority, user)
     form.reset()
   })
 
   function generatePriorityDropdown() {
-    let priorityDropdown = document.createElement('select')
-    let priorityLabel = document.createElement('label')
+    
+    priorityLabel.selected = 'green'
+    priorityLabel.textContent = ' Priority: '
     
     priorityDropdown.id = 'new-task-priority'
 
@@ -40,31 +48,52 @@ document.addEventListener("DOMContentLoaded", () => {
       priorityDropdown.appendChild(option)
     })
 
-    priorityLabel.setAttribute('for', 'new-task-priority')
-    priorityLabel.setAttribute('selected', 'green')
-    priorityLabel.textContent = 'Priority: '
-
     form.insertBefore(priorityLabel, createNewTaskButton)
     form.insertBefore(priorityDropdown, createNewTaskButton)
   }
+
+  function generateUserField(){
+    
+    userLabel.textContent = 'User: '
+  
+    userField.type = 'text'
+    userField.id = 'new-task-user'
+    userField.placeholder = 'user'
+
+    form.insertBefore(userLabel, document.querySelector('label#new-task-description'))
+    form.insertBefore(userField, document.querySelector('label#new-task-description'))
+  }
 })
 
-function addToTaskList(taskName, priority){ 
+function addToTaskList(taskName, priority, user){ 
   
   let taskList = document.querySelector('ul#tasks')
-
   let task = document.createElement('li')
-  task.style.color = document.querySelector('select').value
+  
+  task.style.color = priority
 
+  // creates delete button and adds event listener
   let deleteBtn = document.createElement('button')
+  deleteBtn.textContent = 'X';
   
   deleteBtn.addEventListener('click', e => {
     e.target.parentNode.remove();
   })
 
-  task.textContent = `${taskName} `
-  deleteBtn.textContent = 'X';
+  // creates edit button and adds event listener
+  let editBtn = document.createElement('button')
+  let taskEditable = false
+  editBtn.textContent = 'Edit'
 
+  editBtn.addEventListener('click', e => {
+    task.contentEditable = !taskEditable
+    taskEditable = !taskEditable
+    editBtn.textContent = taskEditable ? 'Done' : 'Edit'
+  });
+
+  task.textContent = `${user} needs to ${taskName}. `
+  
+  task.appendChild(editBtn)
   task.appendChild(deleteBtn)
   taskList.appendChild(task)
 }
