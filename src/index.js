@@ -109,7 +109,7 @@ function addToTaskList(taskName, priority, user){
   let taskEditable = false
   editBtn.textContent = 'Edit'
 
-  // when the edit button is clicked:
+  // when the edit/done button is clicked:
   // 1. the editability of the task content is toggled
   // 2. flips the taskEditable flag
   // 3. changes the textContent of the button depending on whether or not it's currently editable
