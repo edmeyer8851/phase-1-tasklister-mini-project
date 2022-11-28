@@ -1,3 +1,9 @@
+// various messages that are used whenever a task gets completed (deleted from the list)
+taskCompleteMessages = ["Awesome job!", "Get that bread!", "And another one down!", 
+"You're on a roll!", "So productive today!",]
+oneTaskRemainingMessage = "One more to go!"
+lastTaskMessage = "And that's that, all your tasks are complete!"
+
 // waits until the DOM has finished loading before running the script
 document.addEventListener("DOMContentLoaded", () => {
   
@@ -99,7 +105,7 @@ function addToTaskList(taskName, priority, user){
   deleteBtn.textContent = 'X';
   
   deleteBtn.addEventListener('click', e => {
-    e.target.parentNode.remove();
+    deleteTask(e)
   })
 
   // creates edit button and adds event listener
@@ -128,5 +134,20 @@ function addToTaskList(taskName, priority, user){
 
   // appends the new task to the task list
   taskList.appendChild(task)
+}
+
+function deleteTask(e){
+  let taskList = document.querySelector('ul#tasks')
+  let numberTasksRemaining;
+
+  e.target.parentNode.remove();
+  numberTasksRemaining = document.querySelectorAll("li").length;
+  if(numberTasksRemaining === 0){
+    alert(lastTaskMessage);}
+    else if(numberTasksRemaining === 1){
+      alert(oneTaskRemainingMessage);}
+      else {
+        alert(taskCompleteMessages[Math.floor(Math.random() * taskCompleteMessages.length)])
+      }
 }
 
