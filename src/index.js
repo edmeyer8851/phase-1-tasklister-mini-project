@@ -136,6 +136,9 @@ function addToTaskList(taskName, priority, user){
   taskList.appendChild(task)
 }
 
+// function that handles deleting a task from the list and printing an
+// alert message that motivates the user to continue working on their
+// todo list
 function deleteTask(e){
   let taskList = document.querySelector('ul#tasks')
   let numberTasksRemaining;
